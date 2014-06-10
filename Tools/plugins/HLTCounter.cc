@@ -254,7 +254,7 @@ void HLTCounter::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup
 					  << iEvent.id().luminosityBlock() << "  "
 					  << iEvent.id().event() << "  "
 					  << " ============================" << std::endl;
-  unsigned currentLS = iEvent.id().luminosityBlock();
+  // unsigned currentLS = iEvent.id().luminosityBlock();
 
   /////////////////////////////////////////////
   //
