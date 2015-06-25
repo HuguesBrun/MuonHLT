@@ -6,6 +6,15 @@
  *  \authors D. Trocino - Northeastern University <daniele.trocino@cern.ch>
  */
 
+/**
+CB list of possible improvements
+1. Implement isolation cuts in TAG and PROBE
+2. Allow to run on more than one single path at a time
+3. Compute turn-ons in |eta|: [0,0.9], [0.9,1.2], [1.2,2.1], [1.2,2.4]
+4. Check L1 selection (does not seem to work now)
+5. check vertex selection instructions
+**/
+
 #include "FWCore/Framework/interface/EDAnalyzer.h"
 #include "FWCore/Framework/interface/Frameworkfwd.h"
 #include "FWCore/Framework/interface/MakerMacros.h"

@@ -2,67 +2,64 @@ import FWCore.ParameterSet.Config as cms
 
 process = cms.Process("EFFICIENCY")
 
+from MuonHLT.Tools.paths_cff import *
+
+# Configuration parameters ##########
+
+pathToStudy = Mu20
+tagTriggerName = "HLT_IsoMu24_eta2p1_v"
+globalTag = "MCRUN2_74_V9"
+
+fileNames = cms.untracked.vstring(# Z 741 RelVal
+    '/store/relval/CMSSW_7_4_1/RelValZMM_13/GEN-SIM-RECO/MCRUN2_74_V9_gensim71X-v1/00000/3682F137-B9EC-E411-8D42-002618943876.root',
+    '/store/relval/CMSSW_7_4_1/RelValZMM_13/GEN-SIM-RECO/MCRUN2_74_V9_gensim71X-v1/00000/3AC1823B-B9EC-E411-9DB9-002618943970.root',
+    '/store/relval/CMSSW_7_4_1/RelValZMM_13/GEN-SIM-RECO/MCRUN2_74_V9_gensim71X-v1/00000/3EE87BD3-B1EC-E411-B1FC-00261894390B.root',
+)
+secondaryFileNames = cms.untracked.vstring()
+
+#####################################
+
 process.source = cms.Source("PoolSource",
-                            fileNames = cms.untracked.vstring(
-
-        # Z 710pre9 RelVal
-        '/store/relval/CMSSW_7_1_0_pre9/RelValZMM_13/GEN-SIM-RECO/POSTLS171_V11-v1/00000/3C9692C5-6DF0-E311-BA9A-002618943935.root',
-        '/store/relval/CMSSW_7_1_0_pre9/RelValZMM_13/GEN-SIM-RECO/POSTLS171_V11-v1/00000/F03E1E20-76F0-E311-977D-003048678DA2.root',
-
-        ),
-                            secondaryFileNames = cms.untracked.vstring()
+                            fileNames = fileNames,
+                            secondaryFileNames = secondaryFileNames
                             )
 
-process.load('Configuration.StandardSequences.FrontierConditions_GlobalTag_cff')
-process.GlobalTag.globaltag = "POSTLS171_V11::All"
-
-process.load("Configuration.StandardSequences.MagneticField_38T_cff")
-process.load("Configuration.Geometry.GeometryIdeal_cff")
-process.load("Geometry.CommonDetUnit.globalTrackingGeometry_cfi")
+process.load('Configuration.StandardSequences.GeometryRecoDB_cff')
+process.load('Configuration.StandardSequences.MagneticField_38T_PostLS1_cff')
 process.load("RecoMuon.DetLayers.muonDetLayerGeometry_cfi")
 process.load("TrackPropagation.SteppingHelixPropagator.SteppingHelixPropagatorAny_cfi")
 
-# # HLT_IsoMu24 = hltL1sMu16, hltL2fL1sMu16L1f0L2Filtered16Q, hltL3fL1sMu16L1f0L2f16QL3Filtered24Q, hltL3crIsoL1sMu16L1f0L2f16QL3f24QL3crIsoRhoFiltered0p15
-# TRIGNAME = "IsoMu24"
-# PROBEDEN = [ "",     "",           "hltL1sMu16",                     "hltL2fL1sMu16L1f0L2Filtered16Q",       "hltL3fL1sMu16L1f0L2f16QL3Filtered24Q"                    ] 
-# PROBENUM = [ "",     "hltL1sMu16", "hltL2fL1sMu16L1f0L2Filtered16Q", "hltL3fL1sMu16L1f0L2f16QL3Filtered24Q", "hltL3crIsoL1sMu16L1f0L2f16QL3f24QL3crIsoRhoFiltered0p15" ] 
-# NAMEPLOT = [ "Full", "L1",         "L2overL1",                       "L3overL2",                             "ISOoverL3"                                               ] 
-
-# HLT_M40 = hltL1sMu16, hltL2fL1sMu16L1f0L2Filtered16Q, hltL3fL1sMu16L1f0L2f16QL3Filtered40Q 
-TRIGNAME = "Mu40"
-PROBEDEN = [ "",     "",           "hltL1sMu16",                     "hltL2fL1sMu16L1f0L2Filtered16Q"       ] 
-PROBENUM = [ "",     "hltL1sMu16", "hltL2fL1sMu16L1f0L2Filtered16Q", "hltL3fL1sMu16L1f0L2f16QL3Filtered40Q" ] 
-NAMEPLOT = [ "Full", "L1",         "L2overL1",                       "L3overL2"                             ] 
+process.load('Configuration.StandardSequences.FrontierConditions_GlobalTag_condDBv2_cff')
+process.GlobalTag.globaltag = globalTag
 
 #process.schedule = cms.Schedule()
 
-for i in range(len(PROBEDEN)):
-    PROCMODU = TRIGNAME+NAMEPLOT[i]
+for i in range(len(pathToStudy.PROBEDEN)):
+    PROCMODU = pathToStudy.TRIGNAME+pathToStudy.NAMEPLOT[i]
     PROCPATH = 'Path'+PROCMODU
     module =cms.EDAnalyzer("MuonTriggerEfficiencyAnalyzer",
                            vertexes = cms.InputTag("offlinePrimaryVertices"),
                            muons = cms.InputTag("muons"),
                            triggerProcess = cms.string("HLT"), #"TEST"
-                           tagTriggerName = cms.string("HLT_IsoMu24_v"),
-                           triggerName = cms.string("HLT_"+TRIGNAME+"_v"), 
-                           probeFilterDen = cms.string(PROBEDEN[i]),
-                           probeFilterNum = cms.string(PROBENUM[i]),
+                           tagTriggerName = cms.string(tagTriggerName),
+                           triggerName = cms.string("HLT_"+pathToStudy.TRIGNAME+"_v"), 
+                           probeFilterDen = cms.string(pathToStudy.PROBEDEN[i]),
+                           probeFilterNum = cms.string(pathToStudy.PROBENUM[i]),
                            maxNumberMuons = cms.untracked.uint32(999999)
                            )
     setattr(process, PROCMODU, module)
     setattr(process, PROCPATH, cms.Path(module))
 
-#OUTFILE = 'efficiency_'+TRIGNAME
-#if PROBENUM != '': OUTFILE = OUTFILE+'_'+PROBENUM
-#else:              OUTFILE = OUTFILE+'_fullpath'
-#if PROBEDEN != '': OUTFILE = OUTFILE+'_over_'+PROBEDEN
-#OUTFILE = OUTFILE+'.root'
-#print "Output file: "+OUTFILE
-
-process.TFileService = cms.Service("TFileService",
-                                   fileName = cms.string("efficiencies_"+TRIGNAME+'.root'),
+    process.TFileService = cms.Service("TFileService",
+                                   fileName = cms.string("efficiencies_"+pathToStudy.TRIGNAME+'.root'),
                                    closeFileFast = cms.untracked.bool(False)
                                    )
 
 
 process.maxEvents = cms.untracked.PSet(input = cms.untracked.int32(-1))
+
+# Automatic addition of the customisation function from SLHCUpgradeSimulations.Configuration.postLS1Customs
+from SLHCUpgradeSimulations.Configuration.postLS1Customs import customisePostLS1 
+
+#call to customisation function customisePostLS1 imported from SLHCUpgradeSimulations.Configuration.postLS1Customs
+process = customisePostLS1(process)

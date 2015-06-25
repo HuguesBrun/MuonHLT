@@ -4,7 +4,7 @@ process = cms.Process("HLTMENU")
 
 process.source = cms.Source("PoolSource",
                             fileNames = cms.untracked.vstring(
-    'file:/tmp/trocino/store/mc/Summer12_DR53X/ZZJetsTo2L2Nu_TuneZ2star_8TeV-madgraph-tauola/AODSIM/PU_S10_START53_V7A-v3/0000/1CD7D49D-58E0-E111-A6D3-E41F1318099C.root'
+    '/store/relval/CMSSW_7_4_1/RelValZMM_13/GEN-SIM-RECO/MCRUN2_74_V9_gensim71X-v1/00000/3682F137-B9EC-E411-8D42-002618943876.root'
     ),
                             secondaryFileNames = cms.untracked.vstring()
                             )
@@ -18,8 +18,8 @@ process.MessageLogger = cms.Service("MessageLogger",
                                     destinations = cms.untracked.vstring('cout')
                                     )
 
-process.load('Configuration.StandardSequences.FrontierConditions_GlobalTag_cff')
-process.GlobalTag.globaltag = "GR_P_V32::All"
+process.load('Configuration.StandardSequences.FrontierConditions_GlobalTag_condDBv2_cff')
+process.GlobalTag.globaltag = "MCRUN2_74_V9"
 
 process.hltMenuVersionProvider =cms.EDAnalyzer("HLTMenuVersionProvider",
                                                hltProcessName = cms.untracked.string("HLT") 
