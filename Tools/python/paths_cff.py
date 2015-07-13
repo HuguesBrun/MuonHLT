@@ -16,13 +16,13 @@ class HltPathConfig :
 
 # CB extend the path list, may be make paths cff per menu
 
-IsoMu24_Eta2p1 = HltPathConfig("IsoMu24_eta2p1",
-                               [ "",     "",                     "hltL1sL1SingleMu20er",                  "hltL2fL1sMu20Eta2p1L1f0L2Filtered10Q",       "hltL3fL1sMu20Eta2p1L1f0L2f10QL3Filtered24Q"                  ], 
-                               [ "",     "hltL1sL1SingleMu20er", "hltL2fL1sMu20Eta2p1L1f0L2Filtered10Q",  "hltL3fL1sMu20Eta2p1L1f0L2f10QL3Filtered24Q", "hltL3crIsoL1sMu20Eta2p1L1f0L2f10QL3f24QL3trkIsoFiltered0p09" ], 
-                               [ "Full", "L1",                   "L2overL1",                              "L3overL2",                                   "ISOoverL3"                                                   ])
+IsoMu20 = HltPathConfig("IsoMu20",
+                       [ "",     "",                     "hltL1sL1SingleMu16",                  "hltL2fL1sMu16L1f0L2Filtered10Q",       "hltL3fL1sMu16L1f0L2f10QL3Filtered20Q"                  ],
+                       [ "",     "hltL1sL1SingleMu16", "hltL2fL1sMu16L1f0L2Filtered10Q",  "hltL3fL1sMu16L1f0L2f10QL3Filtered20Q", "hltL3crIsoL1sMu16L1f0L2f10QL3f20QL3trkIsoFiltered0p09" ],
+                       [ "Full", "L1",                   "L2overL1",                              "L3overL2",                                   "ISOoverL3"                                                   ])
 
 Mu20 = HltPathConfig("Mu20",
-                     [ "",     "",                   "hltL1sL1SingleMu16",               "hltL2fL1sMu16L1f0L2Filtered10Q",      ], 
-                     [ "",     "hltL1sL1SingleMu16", "hltL2fL1sMu16L1f0L2Filtered10Q",   "hltL3fL1sMu16L1f0L2f10QL3Filtered20Q" ], 
+                     [ "",     "",                   "hltL1sL1SingleMu16",               "hltL2fL1sMu16L1f0L2Filtered10Q",      ],
+                     [ "",     "hltL1sL1SingleMu16", "hltL2fL1sMu16L1f0L2Filtered10Q",   "hltL3fL1sMu16L1f0L2f10QL3Filtered20Q" ],
                      [ "Full", "L1",                 "L2overL1",                         "L3overL2",                            ])
 
